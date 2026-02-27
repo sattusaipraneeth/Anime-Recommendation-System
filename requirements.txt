@@ -1,0 +1,14 @@
+numpy<2.0
+pandas
+scikit-learn
+streamlit
+transformers
+huggingface_hub
+datasets
+scikit-surprise
+# wordcloud
+# seaborn
+# matplotlib
+# squarify
+# tensorflow
+# -e .

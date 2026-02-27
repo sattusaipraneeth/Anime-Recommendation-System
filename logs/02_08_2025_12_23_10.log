@@ -1,0 +1,175 @@
+[ 2025-02-08 12:23:14,445 ] 8 root - INFO - Starting the Anime Recommendation System Training Pipeline...
+[ 2025-02-08 12:23:14,445 ] 41 root - INFO - Initiating Data Ingestion...
+[ 2025-02-08 12:23:14,445 ] 40 root - INFO - Fetching data from Hugging Face dataset: krishnaveni76/Animes
+[ 2025-02-08 12:23:20,052 ] 48 root - INFO - Shape of the dataframe: (12194, 18)
+[ 2025-02-08 12:23:20,052 ] 49 root - INFO - Column names: Index(['anime_id', 'genres', 'name', 'average_rating', 'overview', 'type',
+       'episodes', 'producers', 'licensors', 'studios', 'source',
+       'anime_rating', 'rank', 'popularity', 'favorites', 'scored by',
+       'members', 'image url'],
+      dtype='object')
+[ 2025-02-08 12:23:20,072 ] 50 root - INFO - Preview of the DataFrame:
+   anime_id                                             genres  ...  members                                          image url
+0     32281               Drama, Romance, School, Supernatural  ...  2597495  https://cdn.myanimelist.net/images/anime/5/870...
+1      5114  Action, Adventure, Drama, Fantasy, Magic, Mili...  ...  3176556  https://cdn.myanimelist.net/images/anime/1208/...
+2     28977  Action, Comedy, Historical, Parody, Samurai, S...  ...   595767  https://cdn.myanimelist.net/images/anime/3/720...
+3      9253                                   Sci-Fi, Thriller  ...  2440369  https://cdn.myanimelist.net/images/anime/1935/...
+4      9969  Action, Comedy, Historical, Parody, Samurai, S...  ...   525688  https://cdn.myanimelist.net/images/anime/4/503...
+
+[5 rows x 18 columns]
+[ 2025-02-08 12:23:20,072 ] 51 root - INFO - Data fetched successfully from Hugging Face.
+[ 2025-02-08 12:23:20,073 ] 40 root - INFO - Fetching data from Hugging Face dataset: krishnaveni76/UserRatings
+[ 2025-02-08 12:24:00,180 ] 48 root - INFO - Shape of the dataframe: (1112830, 4)
+[ 2025-02-08 12:24:00,181 ] 49 root - INFO - Column names: Index(['user_id', 'username', 'anime_id', 'rating'], dtype='object')
+[ 2025-02-08 12:24:00,184 ] 50 root - INFO - Preview of the DataFrame:
+   user_id username  anime_id  rating
+0      357   zhambi     35427       5
+1      357   zhambi     28391       6
+2      357   zhambi     36649       7
+3      357   zhambi       530       6
+4      357   zhambi     37451       7
+[ 2025-02-08 12:24:00,184 ] 51 root - INFO - Data fetched successfully from Hugging Face.
+[ 2025-02-08 12:24:00,187 ] 22 root - INFO - Saving DataFrame to file: Artifacts/02_08_2025_12_23_12/data_ingestion/feature_store/Animes.csv
+[ 2025-02-08 12:24:00,356 ] 26 root - INFO - DataFrame saved successfully to Artifacts/02_08_2025_12_23_12/data_ingestion/feature_store/Animes.csv.
+[ 2025-02-08 12:24:00,356 ] 22 root - INFO - Saving DataFrame to file: Artifacts/02_08_2025_12_23_12/data_ingestion/feature_store/UserRatings.csv
+[ 2025-02-08 12:24:01,514 ] 26 root - INFO - DataFrame saved successfully to Artifacts/02_08_2025_12_23_12/data_ingestion/feature_store/UserRatings.csv.
+[ 2025-02-08 12:24:01,581 ] 45 root - INFO - Data Ingestion completed: DataIngestionArtifact(feature_store_anime_file_path='Artifacts/02_08_2025_12_23_12/data_ingestion/feature_store/Animes.csv', feature_store_userrating_file_path='Artifacts/02_08_2025_12_23_12/data_ingestion/feature_store/UserRatings.csv')
+[ 2025-02-08 12:24:01,582 ] 57 root - INFO - Initiating Data Transformation...
+[ 2025-02-08 12:24:01,582 ] 95 root - INFO - Entering initiate_data_transformation method of DataTransformation class.
+[ 2025-02-08 12:24:02,365 ] 54 root - INFO - Shape of the Merged dataframe:(916416, 21)
+[ 2025-02-08 12:24:02,366 ] 55 root - INFO - Column names: Index(['user_id', 'username', 'anime_id', 'rating', 'genres', 'name',
+       'average_rating', 'overview', 'type', 'episodes', 'producers',
+       'licensors', 'studios', 'source', 'anime_rating', 'rank', 'popularity',
+       'favorites', 'scored by', 'members', 'image url'],
+      dtype='object')
+[ 2025-02-08 12:24:03,520 ] 81 root - INFO - Shape of the Merged dataframe:(862804, 8)
+[ 2025-02-08 12:24:03,520 ] 82 root - INFO - Column names: Index(['user_id', 'anime_id', 'rating', 'genres', 'name', 'average_rating',
+       'anime_rating', 'image url'],
+      dtype='object')
+[ 2025-02-08 12:24:03,526 ] 83 root - INFO - Preview of the merged DataFrame:
+   user_id  anime_id  rating  ... average_rating               anime_rating                                          image url
+0      357     28391       6  ...           6.65  PG-13 - Teens 13 or older  https://cdn.myanimelist.net/images/anime/9/778...
+1      357       530       6  ...           7.73  PG-13 - Teens 13 or older  https://cdn.myanimelist.net/images/anime/1440/...
+3      357     17895       7  ...           7.74  PG-13 - Teens 13 or older  https://cdn.myanimelist.net/images/anime/12/52...
+4      357     27991       7  ...           7.56  PG-13 - Teens 13 or older  https://cdn.myanimelist.net/images/anime/6/761...
+5      357     31798       9  ...           7.38  PG-13 - Teens 13 or older  https://cdn.myanimelist.net/images/anime/6/784...
+
+[5 rows x 8 columns]
+[ 2025-02-08 12:24:03,549 ] 22 root - INFO - Saving DataFrame to file: Artifacts/02_08_2025_12_23_12/data_transformation/transformed/Anime_UserRatings.csv
+[ 2025-02-08 12:24:07,286 ] 26 root - INFO - DataFrame saved successfully to Artifacts/02_08_2025_12_23_12/data_transformation/transformed/Anime_UserRatings.csv.
+[ 2025-02-08 12:24:07,400 ] 64 root - INFO - Data Transformation completed: DataTransformationArtifact(merged_file_path='Artifacts/02_08_2025_12_23_12/data_transformation/transformed/Anime_UserRatings.csv')
+[ 2025-02-08 12:24:07,401 ] 76 root - INFO - Initiating Collaborative Model Training...
+[ 2025-02-08 12:24:07,401 ] 41 root - INFO - Loading transformed data...
+[ 2025-02-08 12:24:07,401 ] 43 root - INFO - Loading CSV data from file: Artifacts/02_08_2025_12_23_12/data_transformation/transformed/Anime_UserRatings.csv
+[ 2025-02-08 12:24:08,571 ] 45 root - INFO - CSV file loaded successfully.
+[ 2025-02-08 12:24:08,572 ] 26 root - INFO - Initializing CollaborativeAnimeRecommender
+[ 2025-02-08 12:24:10,797 ] 45 root - INFO - Data preparation completed...
+[ 2025-02-08 12:24:10,797 ] 46 root - INFO - Training and saving SVD model...
+[ 2025-02-08 12:24:10,797 ] 54 root - INFO - Training SVD model
+[ 2025-02-08 12:25:13,802 ] 59 root - INFO - SVD model training completed
+[ 2025-02-08 12:25:13,803 ] 60 root - INFO - Entered the save_model method.
+[ 2025-02-08 12:25:23,132 ] 64 root - INFO - Model saved successfully to Artifacts/02_08_2025_12_23_12/trained_models/collaborative_recommenders/svd.pkl.
+[ 2025-02-08 12:25:31,079 ] 109 root - INFO - Successfully uploaded svd.pkl to Hugging Face: krishnaveni76/anime-recommendation-models
+[ 2025-02-08 12:25:31,079 ] 54 root - INFO - Loading pre-trained SVD model...
+[ 2025-02-08 12:25:31,079 ] 80 root - INFO - Attempting to load object from Artifacts/02_08_2025_12_23_12/trained_models/collaborative_recommenders/svd.pkl
+[ 2025-02-08 12:25:31,079 ] 86 root - INFO - Object loaded successfully.
+[ 2025-02-08 12:25:35,137 ] 134 root - INFO - Shape of recommended_anime: (10, 8)
+[ 2025-02-08 12:25:35,142 ] 57 root - INFO - SVD recommendations:                                           Anime Name                                             Genres                                          Image URL  Rating
+0                               Clannad: After Story  Drama, Fantasy, Romance, Slice of Life, Supern...  https://cdn.myanimelist.net/images/anime/1299/...    8.93
+1                               Fate/Zero 2nd Season            Action, Fantasy, Supernatural, Thriller  https://cdn.myanimelist.net/images/anime/1522/...    8.55
+2                   Fullmetal Alchemist: Brotherhood  Action, Adventure, Drama, Fantasy, Magic, Mili...  https://cdn.myanimelist.net/images/anime/1208/...    9.10
+3                                           Mushishi  Adventure, Fantasy, Historical, Mystery, Seine...  https://cdn.myanimelist.net/images/anime/2/738...    8.66
+4                         Tengen Toppa Gurren Lagann           Action, Adventure, Comedy, Mecha, Sci-Fi  https://cdn.myanimelist.net/images/anime/4/512...    8.63
+5              Evangelion: 2.0 You Can (Not) Advance                              Action, Mecha, Sci-Fi  https://cdn.myanimelist.net/images/anime/5/749...    8.31
+6                             Hunter x Hunter (2011)            Action, Adventure, Shounen, Super Power  https://cdn.myanimelist.net/images/anime/1337/...    9.04
+7               Kara no Kyoukai Movie 5: Mujun Rasen  Action, Drama, Mystery, Romance, Supernatural,...  https://cdn.myanimelist.net/images/anime/1574/...    8.53
+8  Rurouni Kenshin: Meiji Kenkaku Romantan - Tsui...  Action, Drama, Historical, Martial Arts, Roman...  https://cdn.myanimelist.net/images/anime/1391/...    8.71
+9                               Ginga Eiyuu Densetsu                     Drama, Military, Sci-Fi, Space  https://cdn.myanimelist.net/images/anime/13/13...    9.02
+[ 2025-02-08 12:25:35,142 ] 60 root - INFO - Training and saving KNN item-based model...
+[ 2025-02-08 12:25:35,142 ] 68 root - INFO - Training KNN model
+[ 2025-02-08 12:25:35,219 ] 60 root - INFO - Entered the save_model method.
+[ 2025-02-08 12:25:35,245 ] 64 root - INFO - Model saved successfully to Artifacts/02_08_2025_12_23_12/trained_models/collaborative_recommenders/itembasedknn.pkl.
+[ 2025-02-08 12:25:36,067 ] 4009 huggingface_hub.hf_api - WARNING - No files have been modified since last commit. Skipping to prevent empty commit.
+[ 2025-02-08 12:25:36,344 ] 109 root - INFO - Successfully uploaded itembasedknn.pkl to Hugging Face: krishnaveni76/anime-recommendation-models
+[ 2025-02-08 12:25:36,344 ] 68 root - INFO - Loading pre-trained item-based KNN model...
+[ 2025-02-08 12:25:36,344 ] 80 root - INFO - Attempting to load object from Artifacts/02_08_2025_12_23_12/trained_models/collaborative_recommenders/itembasedknn.pkl
+[ 2025-02-08 12:25:36,345 ] 86 root - INFO - Object loaded successfully.
+[ 2025-02-08 12:25:36,373 ] 185 root - INFO - Top 10 recommendations: ['Bleach', 'Naruto', 'One Piece Film: Strong World', 'Fairy Tail', 'Soul Eater', 'Death Note', 'Code Geass: Hangyaku no Lelouch', 'Naruto: Shippuuden', 'Code Geass: Hangyaku no Lelouch R2', 'Fullmetal Alchemist: Brotherhood']
+[ 2025-02-08 12:25:36,408 ] 187 root - INFO - Shape of filtered df: (10, 8)
+[ 2025-02-08 12:25:36,412 ] 73 root - INFO - Item Based recommendations:                            Anime Name                                          Image URL                                             Genres  Rating
+0     Code Geass: Hangyaku no Lelouch  https://cdn.myanimelist.net/images/anime/1032/...  Action, Mecha, Military, School, Sci-Fi, Super...    8.70
+1  Code Geass: Hangyaku no Lelouch R2  https://cdn.myanimelist.net/images/anime/1088/...  Action, Drama, Mecha, Military, Sci-Fi, Super ...    8.91
+2    Fullmetal Alchemist: Brotherhood  https://cdn.myanimelist.net/images/anime/1208/...  Action, Adventure, Drama, Fantasy, Magic, Mili...    9.10
+3                          Soul Eater  https://cdn.myanimelist.net/images/anime/9/780...  Action, Adventure, Comedy, Fantasy, Shounen, S...    7.84
+4                              Bleach  https://cdn.myanimelist.net/images/anime/3/404...  Action, Comedy, Shounen, Super Power, Supernat...    7.92
+5                          Death Note  https://cdn.myanimelist.net/images/anime/9/945...  Mystery, Police, Psychological, Supernatural, ...    8.62
+6                              Naruto  https://cdn.myanimelist.net/images/anime/13/17...  Action, Comedy, Martial Arts, Shounen, Super P...    7.99
+7                  Naruto: Shippuuden  https://cdn.myanimelist.net/images/anime/1565/...  Action, Comedy, Martial Arts, Shounen, Super P...    8.26
+8                          Fairy Tail  https://cdn.myanimelist.net/images/anime/5/181...  Action, Adventure, Comedy, Fantasy, Magic, Sho...    7.57
+9        One Piece Film: Strong World  https://cdn.myanimelist.net/images/anime/1192/...  Action, Adventure, Comedy, Drama, Fantasy, Sho...    8.08
+[ 2025-02-08 12:25:36,412 ] 76 root - INFO - Training and saving KNN user-based model...
+[ 2025-02-08 12:25:36,412 ] 78 root - INFO - Training KNN model
+[ 2025-02-08 12:25:36,535 ] 82 root - INFO - KNN model training completed
+[ 2025-02-08 12:25:36,535 ] 60 root - INFO - Entered the save_model method.
+[ 2025-02-08 12:25:36,558 ] 64 root - INFO - Model saved successfully to Artifacts/02_08_2025_12_23_12/trained_models/collaborative_recommenders/userbasedknn.pkl.
+[ 2025-02-08 12:25:37,249 ] 4009 huggingface_hub.hf_api - WARNING - No files have been modified since last commit. Skipping to prevent empty commit.
+[ 2025-02-08 12:25:37,598 ] 109 root - INFO - Successfully uploaded userbasedknn.pkl to Hugging Face: krishnaveni76/anime-recommendation-models
+[ 2025-02-08 12:25:37,598 ] 84 root - INFO - Loading pre-trained user-based KNN model...
+[ 2025-02-08 12:25:37,598 ] 80 root - INFO - Attempting to load object from Artifacts/02_08_2025_12_23_12/trained_models/collaborative_recommenders/userbasedknn.pkl
+[ 2025-02-08 12:25:37,598 ] 86 root - INFO - Object loaded successfully.
+[ 2025-02-08 12:25:37,649 ] 253 root - INFO - Shape of filtered df: (10, 8)
+[ 2025-02-08 12:25:37,654 ] 89 root - INFO - User Based recommendations:                                   Anime Name                                          Image URL                                             Genres  Rating
+0                    Little Busters! Refrain  https://cdn.myanimelist.net/images/anime/10/55...  Comedy, Drama, Romance, School, Slice of Life,...    8.19
+1         Chuunibyou demo Koi ga Shitai! Ren  https://cdn.myanimelist.net/images/anime/7/566...      Comedy, Drama, Romance, School, Slice of Life    7.55
+2  Clannad: Mou Hitotsu no Sekai, Tomoyo-hen  https://cdn.myanimelist.net/images/anime/12/19...              Drama, Romance, School, Slice of Life    7.93
+3                                      DearS  https://cdn.myanimelist.net/images/anime/1207/...              Comedy, Ecchi, Harem, Romance, Sci-Fi    6.56
+4                                       FLCL  https://cdn.myanimelist.net/images/anime/7/773...    Action, Comedy, Dementia, Mecha, Parody, Sci-Fi    8.03
+5                H2O: Footprints in the Sand  https://cdn.myanimelist.net/images/anime/1762/...                             Harem, Romance, School    7.00
+6                          Hatsukoi Limited.  https://cdn.myanimelist.net/images/anime/7/155...                   Comedy, Romance, School, Shounen    7.27
+7                           Motto To LOVE-Ru  https://cdn.myanimelist.net/images/anime/4/598...      Comedy, Ecchi, Harem, School, Sci-Fi, Shounen    7.28
+8                                   Overlord  https://cdn.myanimelist.net/images/anime/7/880...  Action, Adventure, Fantasy, Game, Magic, Super...    7.91
+9                                       No.6  https://cdn.myanimelist.net/images/anime/1474/...                                     Action, Sci-Fi    7.56
+[ 2025-02-08 12:25:38,100 ] 83 root - INFO - Collaborative Model Training completed: CollaborativeModelArtifact(svd_file_path='Artifacts/02_08_2025_12_23_12/trained_models/collaborative_recommenders/svd.pkl', item_based_knn_file_path='Artifacts/02_08_2025_12_23_12/trained_models/collaborative_recommenders/itembasedknn.pkl', user_based_knn_file_path='Artifacts/02_08_2025_12_23_12/trained_models/collaborative_recommenders/userbasedknn.pkl')
+[ 2025-02-08 12:25:38,100 ] 95 root - INFO - Initiating Content-Based Model Training...
+[ 2025-02-08 12:25:38,100 ] 37 root - INFO - Loading ingested data...
+[ 2025-02-08 12:25:38,100 ] 43 root - INFO - Loading CSV data from file: Artifacts/02_08_2025_12_23_12/data_ingestion/feature_store/Animes.csv
+[ 2025-02-08 12:25:38,208 ] 45 root - INFO - CSV file loaded successfully.
+[ 2025-02-08 12:25:38,209 ] 39 root - INFO - Training ContentBasedRecommender model...
+[ 2025-02-08 12:25:52,919 ] 35 root - INFO - Saving model to Artifacts/02_08_2025_12_23_12/trained_models/content_based_recommenders/cosine_similarity.pkl
+[ 2025-02-08 12:26:00,731 ] 39 root - INFO - Content recommender Model saved successfully
+[ 2025-02-08 12:28:18,967 ] 109 root - INFO - Successfully uploaded cosine_similarity.pkl to Hugging Face: krishnaveni76/anime-recommendation-models
+[ 2025-02-08 12:28:18,969 ] 51 root - INFO - Model saved successfully.
+[ 2025-02-08 12:28:18,969 ] 53 root - INFO - Loading saved model to get recommendations...
+[ 2025-02-08 12:28:18,972 ] 46 root - INFO - Loading model from Artifacts/02_08_2025_12_23_12/trained_models/content_based_recommenders/cosine_similarity.pkl
+[ 2025-02-08 12:28:28,483 ] 50 root - INFO - Model loaded successfully
+[ 2025-02-08 12:28:28,626 ] 64 root - INFO - Recommendations generated successfully
+[ 2025-02-08 12:28:28,804 ] 55 root - INFO - Cosine similarity recommendations:                                           Anime name                                          Image URL                                             Genres Rating
+0  One Piece: Episode of Merry - Mou Hitori no Na...  https://cdn.myanimelist.net/images/anime/9/610...  Action, Adventure, Comedy, Drama, Fantasy, Sho...   8.19
+1  One Piece: Episode of Nami - Koukaishi no Nami...  https://cdn.myanimelist.net/images/anime/5/414...  Action, Adventure, Comedy, Drama, Fantasy, Sho...   8.12
+2  One Piece: Episode of Sabo - 3 Kyoudai no Kizu...  https://cdn.myanimelist.net/images/anime/1373/...  Action, Adventure, Comedy, Drama, Fantasy, Sho...   7.71
+3                       One Piece Film: Strong World  https://cdn.myanimelist.net/images/anime/1192/...  Action, Adventure, Comedy, Drama, Fantasy, Sho...   8.08
+4                                  One Piece Film: Z  https://cdn.myanimelist.net/images/anime/6/442...  Action, Adventure, Comedy, Drama, Fantasy, Sho...   8.14
+5                               One Piece Film: Gold  https://cdn.myanimelist.net/images/anime/12/81...  Action, Adventure, Comedy, Drama, Fantasy, Sho...    7.9
+6                           One Piece: Heart of Gold  https://cdn.myanimelist.net/images/anime/1673/...  Action, Adventure, Comedy, Drama, Fantasy, Sho...    7.5
+7                                   Digimon Frontier  https://cdn.myanimelist.net/images/anime/1048/...  Action, Adventure, Comedy, Drama, Fantasy, Sho...   7.15
+8                                     Digimon Tamers  https://cdn.myanimelist.net/images/anime/7/736...         Adventure, Comedy, Drama, Fantasy, Shounen   7.63
+9                                     Digimon Savers  https://cdn.myanimelist.net/images/anime/1415/...         Adventure, Comedy, Drama, Fantasy, Shounen   6.95
+[ 2025-02-08 12:28:29,200 ] 102 root - INFO - Content-Based Model Training completed: ContentBasedModelArtifact(cosine_similarity_model_file_path='Artifacts/02_08_2025_12_23_12/trained_models/content_based_recommenders/cosine_similarity.pkl')
+[ 2025-02-08 12:28:29,201 ] 112 root - INFO - Initiating Popularity-Based Filtering...
+[ 2025-02-08 12:28:29,205 ] 41 root - INFO - Loading transformed data...
+[ 2025-02-08 12:28:29,206 ] 43 root - INFO - Loading CSV data from file: Artifacts/02_08_2025_12_23_12/data_ingestion/feature_store/Animes.csv
+[ 2025-02-08 12:28:29,762 ] 45 root - INFO - CSV file loaded successfully.
+[ 2025-02-08 12:28:29,765 ] 17 root - INFO - Initializing PopularityBasedFiltering class
+[ 2025-02-08 12:28:29,820 ] 29 root - INFO - Fetching top 10 most popular animes
+[ 2025-02-08 12:28:29,873 ] 48 root - INFO - Popular Anime recommendations:                          Anime name                                          Image URL                                             Genres  Rating
+0                Shingeki no Kyojin  https://cdn.myanimelist.net/images/anime/10/47...       Action, Drama, Fantasy, Shounen, Super Power    8.54
+1                        Death Note  https://cdn.myanimelist.net/images/anime/9/945...  Mystery, Police, Psychological, Supernatural, ...    8.62
+2  Fullmetal Alchemist: Brotherhood  https://cdn.myanimelist.net/images/anime/1208/...  Action, Adventure, Drama, Fantasy, Magic, Mili...    9.10
+3                     One Punch Man  https://cdn.myanimelist.net/images/anime/12/76...  Action, Comedy, Parody, Sci-Fi, Seinen, Super ...    8.50
+4                  Sword Art Online  https://cdn.myanimelist.net/images/anime/11/39...          Action, Adventure, Fantasy, Game, Romance    7.20
+5             Boku no Hero Academia  https://cdn.myanimelist.net/images/anime/10/78...       Action, Comedy, School, Shounen, Super Power    7.89
+6                            Naruto  https://cdn.myanimelist.net/images/anime/13/17...  Action, Comedy, Martial Arts, Shounen, Super P...    7.99
+7                       Tokyo Ghoul  https://cdn.myanimelist.net/images/anime/1498/...  Action, Drama, Horror, Mystery, Psychological,...    7.79
+8            Hunter x Hunter (2011)  https://cdn.myanimelist.net/images/anime/1337/...            Action, Adventure, Shounen, Super Power    9.04
+9                    Kimi no Na wa.  https://cdn.myanimelist.net/images/anime/5/870...               Drama, Romance, School, Supernatural    8.85
+[ 2025-02-08 12:28:29,877 ] 115 root - INFO - Popularity-Based Filtering completed.
+[ 2025-02-08 12:28:29,877 ] 140 root - INFO - Training Pipeline executed successfully.
